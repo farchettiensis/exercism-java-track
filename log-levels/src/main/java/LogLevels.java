@@ -5,10 +5,10 @@ public class LogLevels {
     }
 
     public static String logLevel(String logLine) {
-        throw new UnsupportedOperationException("Please implement the (static) LogLevels.logLevel() method");
+        return logLine.substring(logLine.indexOf("[") + 1, logLine.lastIndexOf("]")).toLowerCase();
     }
 
     public static String reformat(String logLine) {
-        throw new UnsupportedOperationException("Please implement the (static) LogLevels.reformat() method");
+        return message(logLine) + " (" + logLevel(logLine) + ")";
     }
 }
