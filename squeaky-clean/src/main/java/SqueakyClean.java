@@ -1,36 +1,37 @@
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-public class SqueakyClean {
-    public static String clean(String identifier) {
-        identifier = identifier.replaceAll("\\s", "_");
-
-        Matcher matcher = Pattern.compile("-(\\w)").matcher(identifier);
-        StringBuilder sb = new StringBuilder();
-        while (matcher.find()) {
-            matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
+class SqueakyClean {
+    static String clean(String identifier) {
+        StringBuilder result = new StringBuilder();
+        int length = identifier.length();
+        for (int i = 0; i < length; i++) {
+            char c = identifier.charAt(i);
+            if (c == ' ') {
+                result.append('_');
+            } else if (c == '-') {
+                if (i + 1 < length) {
+                    i++;
+                    char nextChar = identifier.charAt(i);
+                    nextChar = convertLeetSpeak(nextChar);
+                    if (Character.isLetter(nextChar)) {
+                        result.append(Character.toUpperCase(nextChar));
+                    }
+                }
+            } else {
+                c = convertLeetSpeak(c);
+                if (Character.isLetter(c)) {
+                    result.append(c);
+                }
+            }
         }
-        matcher.appendTail(sb);
-        identifier = sb.toString();
-
-        matcher = Pattern.compile("[43017]").matcher(identifier);
-        sb = new StringBuilder();
-        while (matcher.find()) {
-            String replacement = switch (matcher.group()) {
-                case "4" -> "a";
-                case "3" -> "e";
-                case "0" -> "o";
-                case "1" -> "l";
-                case "7" -> "t";
-                default -> matcher.group();
-            };
-            matcher.appendReplacement(sb, replacement);
-        }
-        matcher.appendTail(sb);
-        identifier = sb.toString();
-
-        identifier = identifier.replaceAll("[^a-zA-Z_]", "");
-
-        return identifier;
+        return result.toString();
+    }
+    private static char convertLeetSpeak(char c) {
+        return switch (c) {
+            case '4' -> 'a';
+            case '3' -> 'e';
+            case '0' -> 'o';
+            case '1' -> 'l';
+            case '7' -> 't';
+            default -> c;
+        };
     }
 }
