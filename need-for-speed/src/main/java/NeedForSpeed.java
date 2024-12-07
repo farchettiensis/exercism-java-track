@@ -1,31 +1,62 @@
 class NeedForSpeed {
-    NeedForSpeed(int speed, int batteryDrain) {
-        throw new UnsupportedOperationException("Please implement the NeedForSpeed constructor");
+    final int speed;
+    final int batteryDrain;
+    int battery = 100;
+    int totalDistanceDriven = 0;
+
+    public NeedForSpeed(int speed, int batteryDrain) {
+        this.speed = speed;
+        this.batteryDrain = batteryDrain;
     }
 
     public boolean batteryDrained() {
-        throw new UnsupportedOperationException("Please implement the NeedForSpeed.batteryDrained() method");
-    }
-
-    public int distanceDriven() {
-        throw new UnsupportedOperationException("Please implement the NeedForSpeed.distanceDriven() method");
+        return this.battery < this.batteryDrain;
     }
 
     public void drive() {
-        throw new UnsupportedOperationException("Please implement the NeedForSpeed.drive() method");
+        if (!batteryDrained()) {
+            this.totalDistanceDriven += this.speed;
+            this.battery -= this.batteryDrain;
+        }
+    }
+
+    public int distanceDriven() {
+        return this.totalDistanceDriven;
     }
 
     public static NeedForSpeed nitro() {
-        throw new UnsupportedOperationException("Please implement the (static) NeedForSpeed.nitro() method");
+        return new NeedForSpeed(50, 4);
     }
 }
 
 class RaceTrack {
-    RaceTrack(int distance) {
-        throw new UnsupportedOperationException("Please implement the RaceTrack constructor");
+    private final int distance;
+
+    public RaceTrack(int distance) {
+        this.distance = distance;
     }
 
     public boolean canFinishRace(NeedForSpeed car) {
-        throw new UnsupportedOperationException("Please implement the RaceTrack.canFinishRace() method");
+        int maxDistance = car.speed * (car.battery / car.batteryDrain);
+
+        return maxDistance >= this.distance;
     }
+
+    /*
+        public boolean canFinishRace(NeedForSpeed car) {
+        int battery = car.battery;
+        int distanceDriven = 0;
+
+        while (battery >= car.batteryDrain) {
+            distanceDriven += car.speed;
+            battery -= car.batteryDrain;
+
+            if (distanceDriven >= this.distance) {
+                return true;
+            }
+        }
+
+        return false;
+     */
 }
+
